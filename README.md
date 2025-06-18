@@ -2,7 +2,6 @@
 
 This application provides an AI-powered SMS appointment reminder and scheduling system using Azure Communication Services and Azure OpenAI. When customers text your number, they automatically receive appointment reminders and can reschedule through natural conversation.
 
-![SMS Appointment Interface](sms-screenshot.png)
 
 ## Features
 
