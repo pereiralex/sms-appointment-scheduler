@@ -12,7 +12,7 @@ An AI-powered SMS appointment scheduler that demonstrates how to build intellige
 
 ## Demo
 
-![SMS Appointment Scheduler in Action](https://github.com/user-attachments/assets/60a6b6b2-e28a-4738-afc1-c2752c53330f)
+<img src="https://github.com/user-attachments/assets/60a6b6b2-e28a-4738-afc1-c2752c53330f" alt="SMS Appointment Scheduler in Action" width="300">
 
 ## Quick Start
 
