@@ -10,6 +10,10 @@ An AI-powered SMS appointment scheduler that demonstrates how to build intellige
 - **FastAPI Backend**: Modern Python web framework handling webhooks and APIs
 - **Mock Business Logic**: Realistic 30-day calendar with 80% occupancy simulation
 
+## Demo
+
+![SMS Appointment Scheduler in Action](https://github.com/user-attachments/assets/60a6b6b2-e28a-4738-afc1-c2752c53330f)
+
 ## Quick Start
 
 ### Step 1: Clone and Configure
