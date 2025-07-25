@@ -24,7 +24,7 @@ cd sms-appointment-scheduler
 
 # Copy environment template and add your Azure credentials
 cp .env.example .env
-# Edit .env with your Azure details (see detailed instructions below)
+# Edit .env with your Azure details (see detailed setup instructions below)
 ```
 
 ### Step 2: Install and Run
@@ -50,7 +50,9 @@ devtunnel host
 # Note the public URL for Azure Event Grid configuration
 ```
 
-Your SMS appointment scheduler is now running at `http://127.0.0.1:8000`
+The server will start at `http://127.0.0.1:8000` where you can explore the API endpoints and mock calendar.
+
+**Note**: For the full SMS demo experience, you'll also need to complete the Azure Event Grid webhook configuration in the detailed instructions below.
 
 ## Detailed Setup Instructions
 
