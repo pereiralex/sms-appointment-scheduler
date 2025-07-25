@@ -206,6 +206,26 @@ Customer SMS → Azure Communication Services → Azure Event Grid → Your Fast
 5. AI generates intelligent response based on calendar data
 6. Response sent back via Azure Communication Services
 
+## Pricing
+
+This demo uses real Azure services, so minimal usage-based costs may apply. We've designed it to be lightweight, but extended use will incur charges. The following services may involve charges:
+
+1. **Azure Communication Services**
+   - Billed by usage: number of messages sent/received. See the [Azure Communication Services Pricing](https://azure.microsoft.com/pricing/details/communication-services/) page for details.
+
+2. **Azure OpenAI**
+   - Costs depend on the model used (e.g., GPT-4) and token volume. See the [Azure OpenAI Pricing](https://azure.microsoft.com/pricing/details/openai/) page for details.
+
+**Note**: Be sure to monitor your Azure usage to avoid unexpected charges. You can set up [Azure Cost Management](https://learn.microsoft.com/en-us/azure/cost-management-billing/) to track and control your spending.
+
+## Next Steps
+
+- Add appointment confirmation system
+- Integrate with real calendar systems (Outlook, Google Calendar)
+- Add appointment types and duration options
+- Implement customer preference storage
+- Add timezone support for multi-location practices
+
 ## Troubleshooting
 
 **SMS not working?**
@@ -222,3 +242,7 @@ Customer SMS → Azure Communication Services → Azure Event Grid → Your Fast
 **Calendar showing weird dates?**
 - The calendar generates 30 days from today - this is normal
 - Only business days (Mon-Fri) have appointments
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
