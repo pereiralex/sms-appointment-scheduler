@@ -1,145 +1,167 @@
-# SMS appointment reminders with natural language rescheduling
+# AI SMS Appointment Scheduler
 
-This application provides an AI-powered SMS appointment reminder and scheduling system using Azure Communication Services and Azure OpenAI. When customers text your number, they automatically receive appointment reminders and can reschedule through natural conversation.
+An AI-powered SMS appointment scheduler that demonstrates how to build intelligent conversation flows using Azure Communication Services and Azure OpenAI. When customers text your business number, they get automatic appointment reminders and can reschedule through natural conversation.
 
+## What This Demo Shows
 
-## Features
+- **Real SMS Integration**: Uses actual Azure Communication Services phone numbers
+- **AI Conversations**: Natural language appointment scheduling with Azure OpenAI
+- **Event-Driven Architecture**: SMS events trigger AI responses via Azure Event Grid
+- **FastAPI Backend**: Modern Python web framework handling webhooks and APIs
+- **Mock Business Logic**: Realistic 30-day calendar with 80% occupancy simulation
 
-- **Automatic appointment reminders**: First-time texters get instant appointment reminders
-- **AI-powered rescheduling**: Natural conversation for appointment changes using Azure OpenAI
-- **Mock calendar system**: 30-day calendar with realistic 80% occupancy simulation
-- **Smart availability**: AI assistant offers real available time slots when rescheduling
-- **Conversation context**: Maintains conversation history for natural interactions
-- **Business hours**: Realistic 9 AM - 5 PM, Monday-Friday scheduling
+## Quick Start
 
-## How It Works
-
-1. **Customer texts** your Azure Communication Services number
-2. **Instant reminder** sent with their upcoming appointment details
-3. **Natural conversation** for confirming or rescheduling appointments
-4. **Real-time availability** shown from the mock calendar system
-5. **Professional responses** like a human medical receptionist would provide
-
-## Setup Instructions
-
-### Prerequisites
-
-- Python 3.13 or higher
-- Azure account with Azure Communication Services configured
-- Azure Communication Services phone number with SMS capabilities
-- Azure OpenAI service configured with GPT-4 deployment
-
-### 1. Environment Variables
-
-Set up the following environment variables in a `.env` file:
+### Step 1: Clone and Configure
 
 ```bash
-# Azure Communication Services (use connection string for simplicity)
-AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING="your_connection_string"
+git clone https://github.com/pereiralex/sms-appointment-scheduler.git
+cd sms-appointment-scheduler
 
-# Azure OpenAI configuration
-AZURE_OPENAI_ENDPOINT="https://your-openai-resource.openai.azure.com/"
-AZURE_OPENAI_KEY="your_openai_api_key"
-AZURE_OPENAI_MODEL="gpt-4"  # Your deployed model name
-
-# Your Azure Communication Services phone number
-PHONE_NUMBER="+1234567890"
+# Copy environment template and add your Azure credentials
+cp .env.example .env
+# Edit .env with your Azure details (see detailed instructions below)
 ```
 
-### 2. Install Dependencies & Run Server
+### Step 2: Install and Run
 
+**Option A: Using uv (recommended)**
 ```bash
-# Install dependencies and run the FastAPI server
 uv run fastapi dev
 ```
 
-The server will start on `http://127.0.0.1:8000` with automatic calendar generation.
-
-### 3. Create & Host Dev Tunnel
-
-For local development, expose your server to Azure Event Grid:
-
+**Option B: Using pip**
 ```bash
-# Create a tunnel (one-time setup)
-devtunnel create --allow-anonymous
-
-# Create port mapping
-devtunnel port create -p 8000
-
-# Start hosting the tunnel
-devtunnel host
+pip install -r requirements.txt
+python -m uvicorn main:app --reload
 ```
 
-Note the public dev tunnel URL (format: `https://<tunnel-id>-8000.<region>.devtunnels.ms`)
+### Step 3: Expose for Testing
 
-### 4. Configure Azure Event Grid Webhook
+```bash
+# Create dev tunnel for Azure webhooks
+devtunnel create --allow-anonymous
+devtunnel port create -p 8000
+devtunnel host
+# Note the public URL for Azure Event Grid configuration
+```
 
-Set up SMS event forwarding to your API:
+Your SMS appointment scheduler is now running at `http://127.0.0.1:8000`
 
-1. Go to your Azure Communication Services resource in Azure portal
-2. Navigate to **Events** → **Event Subscriptions** → **Add Event Subscription**
-3. Configure:
-   - **Name**: "AppointmentSMSWebhook"
-   - **Event Schema**: Event Grid Schema
-   - **Event Types**: Select "SMS Received" and "SMS Delivery Report Received"
-   - **Endpoint Type**: Web Hook
-   - **Endpoint**: `https://your-tunnel-url.devtunnels.ms/api/sms/webhook`
-4. Click **Create**
+## Detailed Setup Instructions
 
-## Usage Examples
+### Prerequisites
 
-### First Contact - Appointment Reminder
-**Customer texts**: "Hi"
-**System responds**: "Hi! This is a reminder that you have a consultation scheduled for Tuesday, June 17 at 9:30 AM. Can you confirm you'll be able to make it, or would you like to reschedule?"
+**Local Development**:
+- **Python 3.12 or higher** - Required for running the FastAPI application
 
-### Rescheduling Request
-**Customer**: "I'd like to reschedule"
-**System**: "Of course! Could you please let me know which date works better for you? We're open Monday to Friday from 9 AM to 5 PM."
+**Azure Resources**:
+- **Azure Communication Services** - For SMS phone number and messaging
+- **Azure OpenAI** - For conversational AI (GPT-4 recommended)
+- **Azure Event Grid** - For SMS webhook delivery (included with ACS)
 
-### Specific Date Request
-**Customer**: "Is there any availability next Monday afternoon?"
-**System**: "Next Monday, we have the following afternoon time slots available:
-- 1:00 PM
-- 1:30 PM  
-- 3:30 PM
+### Environment Configuration
 
-Please let me know which time works best for you!"
+1. **Copy the environment template**:
+   ```bash
+   cp .env.example .env
+   ```
 
-### Appointment Confirmation
-**Customer**: "3:30 works great"
-**System**: "Perfect! I have rescheduled your consultation to Monday, June 23 at 3:30 PM. Please remember to arrive 15 minutes early. Have a great day!"
+2. **Fill in your Azure credentials** in the `.env` file:
+
+   ```bash
+   # Get this from Azure Portal → Communication Services → Keys
+   AZURE_COMMUNICATION_SERVICE_CONNECTION_STRING="endpoint=https://your-acs.communication.azure.com/;accesskey=your-key"
+   
+   # Get these from Azure Portal → Azure OpenAI → Keys and Endpoint
+   AZURE_OPENAI_ENDPOINT="https://your-openai-resource.openai.azure.com/"
+   AZURE_OPENAI_KEY="your_openai_api_key"
+   AZURE_OPENAI_MODEL="gpt-4"  # Your deployed model name
+   
+   # Get this from Azure Portal → Communication Services → Phone numbers
+   PHONE_NUMBER="+1234567890"
+   ```
+
+The `.env.example` file contains step-by-step instructions for creating these Azure resources and finding the required values.
+
+### Azure Event Grid Webhook Configuration
+
+You need to configure Azure Event Grid to forward SMS events to your local server.
+
+1. **Get your dev tunnel URL** from the previous step (format: `https://xyz-8000.region.devtunnels.ms`)
+
+2. **Configure the webhook in Azure Portal**:
+   - Go to your Azure Communication Services resource
+   - Navigate to **Events** → **Event Subscriptions** → **+ Event Subscription**
+   - Fill in:
+     - **Name**: `AppointmentSMSWebhook`
+     - **Event Schema**: `Event Grid Schema`
+     - **Event Types**: Select `SMS Received` and `SMS Delivery Report Received`
+     - **Endpoint Type**: `Web Hook`
+     - **Endpoint**: `https://your-tunnel-url.devtunnels.ms/api/sms/webhook`
+   - Click **Create**
+
+3. **Test it**: Send an SMS to your Azure phone number to see the AI respond.
+
+## Example Conversations
+
+### First Contact
+```
+Customer: "Hi"
+AI: "Hi! This is a reminder that you have a consultation scheduled for 
+     Tuesday, June 17 at 9:30 AM. Can you confirm you'll be able to make it, 
+     or would you like to reschedule?"
+```
+
+### Natural Rescheduling
+```
+Customer: "I need to reschedule for next week"
+AI: "Of course! For next week, I have these time slots available:
+     Monday: 10:00 AM, 2:30 PM, 4:00 PM
+     Tuesday: 9:00 AM, 11:30 AM, 3:30 PM
+     Which would work best for you?"
+
+Customer: "Tuesday 11:30 works"
+AI: "Perfect! I've rescheduled your consultation to Tuesday, June 24 at 11:30 AM. 
+     Please arrive 15 minutes early. See you then!"
+```
 
 ## API Endpoints
 
-- `GET /`: Health check endpoint
-- `GET /appointments`: View all customer appointments
-- `GET /calendar`: View the entire mock calendar
-- `GET /calendar/{date}`: View available slots for specific date (YYYY-MM-DD)
-- `POST /api/sms/webhook`: Webhook endpoint for SMS events from Azure Communication Services
+Once running, explore these endpoints:
+
+- **`GET /`** - Health check and welcome message
+- **`GET /appointments`** - View all mock customer appointments
+- **`GET /calendar`** - See the full 30-day generated calendar
+- **`GET /calendar/2024-01-15`** - Check availability for a specific date
+- **`POST /api/sms/webhook`** - Webhook endpoint (used by Azure Event Grid)
 
 ## Mock Calendar System
 
-The application generates a realistic 30-day calendar:
-- **Business hours**: 9:00 AM - 5:00 PM
+The demo generates a realistic business calendar:
+
+- **30 days starting from today**
+- **Business hours**: 9:00 AM - 5:00 PM  
 - **Days**: Monday through Friday only
-- **Slots**: 30-minute appointment intervals
-- **Occupancy**: 80% pre-booked (20% available for realistic scheduling)
-- **Appointment types**: All consultations
+- **Intervals**: 30-minute appointment slots
+- **Occupancy**: 80% pre-booked (realistic availability)
+- **Type**: All appointments are "consultations"
+
+Each customer gets assigned a random existing appointment when they first text.
 
 ## AI Assistant Behavior
 
-The AI receptionist:
-- Provides immediate appointment reminders to new contacts
-- Offers specific available time slots when rescheduling
-- Maintains professional, friendly tone
-- Handles natural language requests
-- Confirms appointment details clearly
-- Provides business hour information
+The AI receptionist is designed to:
+
+- Provide immediate appointment reminders to new contacts
+- Offer specific available time slots when rescheduling  
+- Maintain professional, friendly medical office tone
+- Handle natural language requests ("next week", "Monday afternoon")
+- Confirm appointment details clearly
+- Remember conversation context for follow-up questions
 
 ## Development
-
 Run in development mode with hot reloading:
-
 ```bash
 uvicorn main:app --reload
 ```
@@ -167,13 +189,30 @@ The application handles both single events and batch arrays automatically.
 ## Architecture
 
 ```
-Customer SMS → Azure Communication Services → Azure Event Grid → Your API → Azure OpenAI → SMS Response
+Customer SMS → Azure Communication Services → Azure Event Grid → Your FastAPI App → Azure OpenAI → SMS Response
 ```
 
-## Next Steps
+**Event Flow**:
+1. Customer sends SMS to your Azure phone number
+2. Azure Communication Services receives the message
+3. Event Grid forwards SMS event to your webhook
+4. FastAPI processes the event and calls Azure OpenAI
+5. AI generates intelligent response based on calendar data
+6. Response sent back via Azure Communication Services
 
-- Add appointment confirmation system
-- Integrate with real calendar systems (Outlook, Google Calendar)
-- Add appointment types and duration options
-- Implement customer preference storage
-- Add timezone support for multi-location practices
+## Troubleshooting
+
+**SMS not working?**
+- Check your `.env` file has correct Azure credentials
+- Verify your dev tunnel is running and publicly accessible
+- Confirm Azure Event Grid webhook is configured with correct URL
+- Check Azure portal for Event Grid delivery failures
+
+**AI responses seem off?**
+- Verify your Azure OpenAI deployment name matches `AZURE_OPENAI_MODEL` in `.env`
+- Check console logs for OpenAI API errors
+- Try with a different model (GPT-3.5-turbo vs GPT-4)
+
+**Calendar showing weird dates?**
+- The calendar generates 30 days from today - this is normal
+- Only business days (Mon-Fri) have appointments
