@@ -1,6 +1,8 @@
 # AI SMS Appointment Scheduler
 
-An AI-powered SMS appointment scheduler that demonstrates how to build intelligent conversation flows using Azure Communication Services and Azure OpenAI. When customers text your business number, they get automatic appointment reminders and can reschedule through natural conversation.
+An AI-powered SMS appointment scheduler that demonstrates natural-language conversation flows using Azure Communication Services and Azure OpenAI. In this demo, the flow begins when a customer texts your business number; from there, the app simulates reminders and supports rescheduling through conversation to show the end-to-end pattern quickly.
+
+Note: In production, reminders are typically triggered by external systems or scheduled jobs (e.g., a 24-hour pre-appointment event published to Event Grid). This sample uses inbound SMS as the trigger to keep the setup simple and self-contained.
 
 ## What This Demo Shows
 
