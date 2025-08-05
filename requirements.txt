@@ -1,0 +1,8 @@
+# Alternative installation method for users without uv
+# Run: pip install -r requirements.txt
+
+azure-communication-sms>=1.1.0
+fastapi>=0.116.1
+openai>=1.97.1
+python-dotenv>=1.1.1
+uvicorn>=0.35.0

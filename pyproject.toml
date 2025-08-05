@@ -1,0 +1,18 @@
+[project]
+name = "sms-appointment-scheduler"
+version = "0.1.0"
+description = "AI-powered SMS appointment scheduling demo using Azure Communication Services and Azure OpenAI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "azure-communication-sms>=1.1.0",
+    "fastapi>=0.116.1",
+    "fastapi-cli>=0.0.8",
+    "openai>=1.97.1",
+    "python-dotenv>=1.1.1",
+    "uvicorn>=0.35.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pereiralex/sms-appointment-scheduler"
+"Source" = "https://github.com/pereiralex/sms-appointment-scheduler"
